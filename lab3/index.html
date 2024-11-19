@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="libs/bootstrap.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <title>Система управління бібліотекою</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="mx-auto">Система управління бібліотекою</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Додати книгу</h5>
+                    <form>
+                        <div id="bookNameDiv" class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="bookName"
+                                placeholder="Назва книги"
+                            />
+                            <label
+                                id="bookNameLabel"
+                                style="display: none; color: red"
+                                >Це поле є обов'язковим</label
+                            >
+                        </div>
+                        <div id="authorDiv" class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="author"
+                                placeholder="Автор"
+                            />
+                            <label
+                                id="bookAuthorLabel"
+                                style="display: none; color: red"
+                                >Це поле є обов'язковим</label
+                            >
+                        </div>
+                        <div id="yearDiv" class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="yearOfPublication"
+                                placeholder="Рік видання"
+                            />
+                            <label
+                                id="bookYearLabel"
+                                style="display: none; color: red"
+                                >Це поле є обов'язковим</label
+                            >
+                        </div>
+
+                        <button id="addBook" class="btn btn-primary">
+                            Додати книгу
+                        </button>
+                    </form>
+                    <br />
+
+                    <button id="findButton" class="btn btn-primary">
+                        Шукати книгу
+                    </button>
+
+        
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="bookList" class="card-body">
+                    <h5 class="card-title">Список книг</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Назва</th>
+                                <th>Автор</th>
+                                <th>Рік</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTable">
+                            <!-- Список книг буде додано через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Додати користувача</h5>
+                    <form>
+                        <div id="userNameDiv" class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="userName"
+                                placeholder="Ім'я"
+                            />
+                            <label
+                                id="userNameLabel"
+                                style="display: none; color: red"
+                                >Це поле є обов'язковим</label
+                            >
+                        </div>
+                        <div id="userEmailDiv" class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="email"
+                                placeholder="Email"
+                            />
+                            <label
+                                id="emailLabel"
+                                style="display: none; color: red"
+                                >Це поле є обов'язковим</label
+                            >
+                        </div>
+
+                        <button id="addUser" class="btn btn-primary">
+                            Додати користувача
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="userList" class="card-body">
+                    <h5 class="card-title">Список користувачів</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ім'я</th>
+                                <th>Email</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- Список користувачів буде додано через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="dist/bundle.js"></script>
+    </body>
+</html>
