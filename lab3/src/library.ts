@@ -13,18 +13,6 @@ export class Library<
         this.users.push(user);
     }
 
-    deleteBook(bookId: number): boolean {
-        const initialLength = this.books.length;
-        this.books = this.books.filter((book) => book.id !== bookId);
-        return this.books.length < initialLength;
-    }
-
-    deleteUser(userId: number): boolean {
-        const initialLength = this.users.length;
-        this.users = this.users.filter((user) => user.id !== userId);
-        return this.users.length < initialLength;
-    }
-
     getUsers() {
         return this.users;
     }
@@ -35,20 +23,6 @@ export class Library<
 
     find(id: number): UserType | undefined {
         return this.users.filter((x) => x.id === id)[0];
-    }
-
-    findBook(info: string): void {
-        let found = false;
-        this.books.forEach((book) => {
-            if (book.author === info || book.bookName === info) {
-            found = true;
-           
-            alert(`Назва книги: ${book.bookName}\nАвтор: ${book.author}\nРік видання: ${book.yearOfPublishing}\nСтатус: ${book.isBorrowed ? 'Запозичена' : 'Доступна'}`);
-            }
-        });
-        if (!found) {
-            alert("Книги з таким ім'ям чи автором не знайдено");
-        }
     }
 
     saveToLocalStorage() {
@@ -73,6 +47,15 @@ export class Library<
     clear() {
         localStorage.clear();
     }
+
+    // findBook(condition: (book: BookType) => boolean): BookType | undefined {
+    //     return this.books.find(condition);
+    // }
+
+    // findUsersByBook(bookId: string, condition: (user: UserType, book: BookType) => boolean): UserType[] {
+    //     // Тут реалізуємо логіку пошуку користувачів за книгою, використовуючи condition
+    //     return this.users.filter(user => /* ... логіка пошуку */);
+    // }
 }
 
 export interface Identifiable<T, T1> {

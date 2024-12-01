@@ -39,9 +39,6 @@ export class Validation {
             if (Validation.yearOfPublication.value === '') {
                 bookYearLabel.style.display = 'block';
                 return false;
-                // } else if (!/^\d+$/.test(Validation.bookName.value)) {
-                //     alert('Введіть тільки цифри');
-                //     return false;
             } else {
                 bookYearLabel.style.display = 'none';
             }
@@ -68,11 +65,6 @@ export class Validation {
         if (emailLabel != null) {
             if (Validation.email.value === '') {
                 emailLabel.style.display = 'block';
-                return false;
-                // } else if (
-                //     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Validation.bookName.value)
-                // ) {
-                alert('Введіть правильний email');
                 return false;
             } else {
                 emailLabel.style.display = 'none';
