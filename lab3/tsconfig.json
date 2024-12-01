@@ -9,7 +9,7 @@
     "sourceMap": true
   },
   "include": [
-    "src/**/*.ts"  // Тепер він вказує на правильний шлях до файлів у папці src
+    "src"
   ],
   "exclude": [
     "node_modules"

@@ -1,7 +1,7 @@
 import {Validation} from './validation';
-
+import {IBook, Book, IUser, User} from './models';
 import {LibraryService} from './services';
-
+import {Library} from './library';
 
 class App {
     private readonly validation = new Validation();
@@ -10,19 +10,7 @@ class App {
     constructor() {
         this.addUserBookHandler();
         this.libraryService.loadContent();
-
-        this.addFindHandler();
         //this.libraryService.clear();
-    }
-
-    private addFindHandler() {
-        const findButton = document.getElementById(
-            'findButton',
-        ) as HTMLButtonElement;
-        findButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.libraryService.findBook();
-        });
     }
 
     private addUserBookHandler() {
@@ -38,7 +26,7 @@ class App {
             }
         });
 
-        // Логіка обробки кліку на кнопці "Додати корстувача"
+        // Логіка обробки кліку на кнопці "Додати книгу"
 
         const addUserButton = document.getElementById(
             'addUser',

@@ -28,6 +28,6 @@ module.exports = {
             directory: path.join(__dirname, '/'),
         },
         compress: true,
-        port: 5500,
+        port: 9000,
     },
 };
