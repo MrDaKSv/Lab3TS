@@ -35,15 +35,23 @@ export class Validation {
         //Перевірка поля рік видання
 
         const bookYearLabel = document.getElementById('bookYearLabel');
+
         if (bookYearLabel != null) {
             if (Validation.yearOfPublication.value === '') {
                 bookYearLabel.style.display = 'block';
+            } else if (!/^\d{4}$/.test(Validation.yearOfPublication.value)) {
+                alert('Введіть рік у форматі 4 цифр');
                 return false;
             } else {
                 bookYearLabel.style.display = 'none';
+                return true;
             }
         }
-        return true;
+        else{
+            alert('Введіть рік у форматі 4 цифр');
+            return false;
+        }
+          return false;
     }
 
     checkUserFields(): boolean {
@@ -65,6 +73,11 @@ export class Validation {
         if (emailLabel != null) {
             if (Validation.email.value === '') {
                 emailLabel.style.display = 'block';
+                return false;
+                // } else if (
+                //     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Validation.bookName.value)
+                // ) {
+                alert('Введіть правильний email');
                 return false;
             } else {
                 emailLabel.style.display = 'none';

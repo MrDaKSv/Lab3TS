@@ -8,10 +8,32 @@ export class LibraryService {
     getUserById(id: number): IUser | undefined {
         const user = LibraryService.library.find(id);
         if (user) {
+
             return user;
         }
         return undefined;
     }
+
+    findBook() {
+        const input = prompt('Введіть назву чи автора книги');
+        if (input != null && input.trim() !== '') {
+            const foundBook = LibraryService.library.getBooks().find(
+                (book) => book.author === input || book.bookName === input
+            );
+    
+            if (foundBook) {
+                const isBorrowedMessage = foundBook.isBorrowed ? 'Так' : 'Ні';
+                const resultMessage = `Знайдено книгу:\n\nНазва: ${foundBook.bookName}\nАвтор: ${foundBook.author}\nРік публікації: ${foundBook.yearOfPublishing}\nПозичено: ${isBorrowedMessage}`;
+                alert(resultMessage);
+            } else {
+                alert("Книги з таким ім'ям чи автором не знайдено");
+            }
+        } else {
+            alert('Введений рядок порожній');
+        }
+    }
+    
+    
 
     loadContent() {
         LibraryService.library.loadFromLocalStorage();
@@ -23,7 +45,6 @@ export class LibraryService {
 
         users.forEach((user) => {
             this.createUserElement(user);
-            console.log(user);
         });
 
         books.forEach((book) => {
@@ -40,8 +61,7 @@ export class LibraryService {
         LibraryService.library.addBook(book);
         this.createBookElement(book);
         LibraryService.library.saveToLocalStorage();
-
-        console.log('Book added: ', book);
+        console.log(book instanceof Book); // Повинно вивести true, якщо book є екземпляром класу Book
     }
 
     public addUser() {
@@ -50,13 +70,13 @@ export class LibraryService {
             Validation.email.value,
         );
         LibraryService.library.addUser(user);
+        console.log(user instanceof User); // Повинно вивести true, якщо user є екземпляром класу User
         this.createUserElement(user);
         LibraryService.library.saveToLocalStorage();
-
-        console.log('User added: ', user);
     }
 
     public createBookElement(book: Book) {
+        console.log(book);
         // Створюємо новий елемент div
         const bookDiv = document.createElement('div');
 
@@ -77,46 +97,74 @@ export class LibraryService {
 
         button.addEventListener('click', (event) => {
             event.preventDefault();
-
+        
             let flag = true;
             if (button.textContent == 'Позичити') {
                 let userIdStr = prompt('введіть ID користувача');
-                if (userIdStr != null || userIdStr == '') {
-                    let userId;
+                userIdStr = userIdStr ? userIdStr.trim() : '';
+                
+                // Перевірка на null і порожній рядок
+                if (userIdStr !== null && userIdStr.trim() !== '' && !isNaN(Number(userIdStr))) {
+                    const userId = Number(userIdStr); // Перетворення в число
+                    console.log(userId);
+        
                     try {
-                        userId = parseInt(userIdStr);
                         let user = this.getUserById(userId);
-                        if (user) {
-                            if (user.canBorrow()) {
-                                book.borrow();
-                                user.borrow(book.id);
-                                flag = false;
+                        if (user instanceof User){
+                            if (user) {
+                               
+                                if (user.canBorrow()) {
+                                   
+                                    book.borrow();
+                                    
+                                    user.borrow(book.id);
+                        
+                                    flag = false;
+                                    
+            
+                                    alert(
+                                        `Книга ${book.bookName} (${book.yearOfPublishing}), була позичена ${user.id} ${user.name} ${user.email}`,
+                                    );
+                                    LibraryService.library.updateBookStatus(book.id, true);
+                                    LibraryService.library.updateUserBorrowedBooks(userId, book.id);
 
-                                alert(
-                                    `Книга ${book.bookName} (${book.yearOfPublishing}), була позичена ${user.id} ${user.name} ${user.email}`,
-                                );
+                                    console.log(book);
 
-                                button.textContent = 'Повернути';
-                            } else {
-                                alert('Користувач вже позичив 3 книги');
+                                    button.textContent = 'Повернути';
+                                } else {
+                                    alert('Користувач вже позичив 3 книги');
+                                }
+                            }else {
+                                alert('Не існує користувача з таким ID');
                             }
-                        } else {
-                            alert('Не існує користувача з таким ID');
-                        }
-                    } catch {
+                        }else{
+                            alert('T');
+                        } 
+                    } catch (error: unknown) { // Використовуємо тип unknown
                         alert('Введіть коректні дані');
+                        if (error instanceof Error) { // Перевіряємо, чи є це об'єкт Error
+                            console.error('Тип помилки:', error.constructor.name); // Виведення типу помилки
+                            console.error('Повна інформація про помилку:', error); // Виведення повної інформації про помилку
+                            console.error('Повідомлення помилки:', error.message); // Виведення повідомлення помилки
+                        } else {
+                            console.error('Помилка не є екземпляром Error:', error);
+                        }
                     }
                 } else {
-                    alert('Порожній рядок');
+                    alert('Введіть коректний ID користувача');
                 }
             }
-
+        
             if (button.textContent == 'Повернути' && flag) {
                 let userIdStr = prompt('введіть ID користувача');
-                if (userIdStr != null || userIdStr == '') {
-                    let userId;
+                userIdStr = userIdStr ? userIdStr.trim() : '';
+                
+                // Перевірка на null і порожній рядок
+                if (userIdStr !== null && userIdStr.trim() !== '' && !isNaN(Number(userIdStr))) {
+                    const userId = Number(userIdStr); // Перетворення в число
+        
+
                     try {
-                        userId = parseInt(userIdStr);
                         let user = this.getUserById(userId);
                         if (user) {
                             if (user.canReturn(book.id)) {
@@ -126,6 +174,11 @@ export class LibraryService {
                                 alert(
                                     `Книга ${book.bookName} (${book.yearOfPublishing}), була повернута`,
                                 );
+                        
+                                LibraryService.library.updateBookStatus(book.id, false); // Оновити книгу на доступну
+
+                                LibraryService.library.updateUserBorrowedBooks(userId, book.id);
+
 
                                 button.textContent = 'Позичити';
                             } else {
@@ -138,11 +191,11 @@ export class LibraryService {
                         alert('Введіть коректні дані');
                     }
                 } else {
-                    alert('Порожній рядок');
+                    alert('Введіть коректний ID користувача');
                 }
             }
         });
-
+        
         const horizontalLine = document.createElement('hr');
 
         // Додаємо label і button до div
