@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "es6",
+    "module": "NodeNext",   // Замінили es6 на NodeNext
     "removeComments": true,
     "strict": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "nodenext", 
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "include": [
     "src"

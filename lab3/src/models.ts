@@ -1,4 +1,5 @@
-import {Identifiable, Bookable} from './library';
+import { Identifiable, Bookable } from './library';
+
 export interface IBook extends Bookable<string> {
     bookName: string;
     author: string;
@@ -25,6 +26,8 @@ export class Book implements IBook {
         this.id = Math.floor(Math.random() * 1000000000);
     }
 
+    
+
     borrow(): void {
         this.isBorrowed = true;
     }
@@ -40,13 +43,9 @@ export interface IUser extends Identifiable<string, number> {
     id: number;
 
     getId(): number;
-
     borrow(id: number): void;
-
     canBorrow(): boolean;
-
     return(id: number): void;
-
     canReturn(id: number): boolean;
 }
 
@@ -63,29 +62,41 @@ export class User implements IUser {
         this.borrowedBooks = [];
     }
 
+    
+
     getId(): number {
         return this.id;
     }
 
     borrow(id: number) {
-        this.borrowedBooks.push(id);
+        // Перевірка чи книга вже не позичена
+        if (!this.borrowedBooks.includes(id)) {
+            if (this.canBorrow()) {
+                this.borrowedBooks.push(id);
+            } else {
+                alert('Неможливо позичити більше трьох книг');
+            }
+        } else {
+            alert('Цю книгу вже позичено');
+        }
     }
 
     canBorrow(): boolean {
-        if (this.borrowedBooks.length < 3) {
-            return true;
-        }
-        return false;
+        // Користувач може позичити книгу, якщо у нього менше 3 позичених
+        return this.borrowedBooks.length < 3;
     }
 
     canReturn(id: number): boolean {
-        if (this.borrowedBooks.includes(id)) {
-            return true;
-        }
-        return false;
+        // Перевіряє, чи є книга у списку позичених
+        return this.borrowedBooks.includes(id);
     }
 
     return(id: number): void {
-        this.borrowedBooks = this.borrowedBooks.filter((id) => id !== id);
+        // Перевіряємо, чи дійсно є ця книга в списку позичених
+        if (this.canReturn(id)) {
+            this.borrowedBooks = this.borrowedBooks.filter((bookId) => bookId !== id);
+        } else {
+            alert('Книга не знайдена у вашому списку');
+        }
     }
 }
